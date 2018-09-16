@@ -1,0 +1,71 @@
+create table depositor(
+       cust_name varchar2(25),
+       loan_no varchar2(30),
+       primary key(loan_no)		);
+
+
+create table borrower(
+       cust_name varchar2(25),
+       acc_no varchar2(30),
+       primary key(acc_no)		);
+
+create table branch(
+       branch_name varchar2(25),
+       branch_city varchar2(20),
+       asset number,
+       primary key(branch_name)	
+      	);
+
+
+create table account(
+       branch_name varchar2(25),
+       balance number,
+       primary key(branch_name),
+       foreign key(branch_name)references branch);
+
+
+insert into borrower values('jack walker','1234567890');
+insert into borrower values('adam smith','2234567890');
+insert into borrower values('john smith','3234567890');
+insert into borrower values('henry cavill','41234567890');
+insert into borrower values('tom cruise','5234567890');
+
+insert into depositor values('jack walker','1234567890');
+insert into depositor values('will smith','7234567890');
+insert into depositor values('rajinikanth','8234567890');
+insert into depositor values('henry cavill','41234567890');
+insert into depositor values('tom cruise','5234567890');
+
+insert into branch values('ettimadai','coimbatore',100000);
+insert into branch values('amritapuri','kollam',50000);
+insert into branch values('wall street','brooklyn',25000);
+insert into branch values('new jersey','brooklyn',90000);
+insert into branch values('majestic','banglore',75000); 
+
+insert into account values('ettimadai',10000);
+insert into account values('amritapuri',5000);
+insert into account values('wall street',2500);
+insert into account values('new jersey',9000);
+insert into account values('majestic',7500);
+
+select * from depositor;
+select * from borrower;
+select * from branch;
+select * from account;
+
+
+select distinct cust_name from depositor where cust_name in ( select cust_name from borrower);
+
+select cust_name from depositor natural join borrower;
+
+select distinct cust_name from borrower where cust_name not in ( select cust_name from depositor);
+
+select cust_name from borrower where cust_name not in('Smith','Jones');
+
+select branch_name from branch where asset > some(select asset from branch where branch_city='Brooklyn');
+
+select branch_name from branch where asset > all(select asset from branch where branch_city='Brooklyn');
+
+select branch_name from account group by (branch_name) having avg(balance) >= all(select avg(balance) from account group by branch_name);
+
+select cust_name from borrower where  exists (select cust_name from depositor where depositor.cust_name=borrower.cust_name);

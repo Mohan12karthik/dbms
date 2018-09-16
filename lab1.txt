@@ -1,0 +1,68 @@
+create table customer(
+       custid		varchar2(3),		 
+       Lname		varchar2(20),		
+       Fname		varchar2(20),		
+       area		varchar2(2),		
+       phoneno		numeric(8),		
+       primary key(custid));
+
+create table movies(
+        Mvno		numeric(2),
+	title		varchar2(25),
+	type		varchar2(10),
+	star		varchar2(25),
+	price		numeric(8,2),
+	primary key(Mvno));
+
+create table invoice(
+	Invno		varchar2(3),
+	mvno		numeric(2),
+	custid		varchar2(3),
+	issueDate       date,
+	retDate		date,
+	primary key(Invno),
+	foreign key(custid)references customer,
+	foreign key(Mvno)references movies);
+
+
+insert into customer values('A01','Bayross','Ivan','Sa','6125467')
+
+insert into customer values('A02','Saitwal','Vandana','Mu','5560379')
+
+insert into customer values('A03','Jaguste','Pramada','Da','4563891')
+
+insert into customer values('A04','Navindgi','Basu','Ba','6125401')
+
+insert into customer values('A05','Sreedhar','Ravi','Va','  ')		
+
+insert into customer values('A06','  ','Rukmini','Gh','5125274')
+
+
+
+insert into movies values('1','Bloody Vengeance','action','Jackie Chan','100.00')
+insert into movies values('2','The Firm','thriller','Tom cruise','200.00')
+insert into movies values('3','Police Story','action','Jackie Chan','150.00')
+insert into movies values('4','Home Alone','Comedy','Macaulay Culkin','150.55')
+insert into movies values('5','The Fugitive','Thriller','Harrison Ford','200.00')
+insert into movies values('6','Coma','Suspense','Michael Douglas','100.00')
+insert into movies values('7','Dracula','Horror','Gary Oldman','150.25')
+insert into movies values('8','Quick change','Comedy','Bill Murray','100.00')
+insert into movies values('9','Gone with the wind','Drama','Clarke Gable','250.00')
+insert into movies values('10','Carry on Doctor','Comedy','Leslie Phillips','100.00')
+
+
+
+insert into invoice values('i01','4','A01','23-jul-2012','25-jul-2012')
+insert into invoice values('i02','3','A02','12-aug-2012','15-aug-2012')
+insert into invoice values('i03','1','A02','15-aug-2012','18-aug-2012')
+insert into invoice values('i04','6','A03','10-sep-2012','13-sep-2012')
+insert into invoice values('i05','7','A04','05-aug-2012','08-aug-2012')
+insert into invoice values('i06','2','A06','18-sep-2012','20-sep-2012')
+insert into invoice values('i07','9','A05','07-jul-2012','10-jul-2012')
+insert into invoice values('i08','9','A01','11-aug-2012','14-aug-2012')
+insert into invoice values('i09','5','A03','06-jul-2012','09-jul-2012')
+insert into invoice values('i10','8','A06','03-sep-2012','06-sep-2012')
+
+select * from customer;
+select * from movies;
+select * from invoice;
