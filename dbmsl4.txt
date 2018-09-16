@@ -1,0 +1,135 @@
+create table department(
+       dept_name varchar2(30),
+       building varchar2(25),
+       budget numeric(10,0),
+       primary key(dept_name));
+
+insert into department values('cse','Academic block3','100000');
+insert into department values('mech','Main block','120000');
+insert into department values('ece','It block','100000');
+insert into department values('aerospace','Main block','120000');
+insert into department values('Environmental science','itblock','100000');
+
+select * from department;
+
+create table course(
+       course_id varchar2(10),
+       title varchar2(30),
+       dept_name varchar2(30),
+       credits numeric(1,0),
+       primary key(course_id),
+       foreign key(dept_name)references department);
+
+insert into course values('Cse100','C programming','cse','4');
+insert into course values('Cse220','Data structures','cse','4');
+insert into course values('Evs100','Environmental studies','Environmental science','3');
+insert into course values('Mec100','Mechanical design','mech','4');
+insert into course values('Ae101','Mechanical vibration','aerospace','4');
+insert into course values('Cse303','Algorithms','cse','4');
+insert into course values('Mec200','Vibrations','mech','3');
+
+select * from course;
+
+
+create table instructor(
+       ID numeric(5,0),
+       name varchar2(30),
+       dept_name varchar2(30),
+       salary numeric(10,0),
+       primary key(ID),
+       foreign key(dept_name)references department);
+
+insert into instructor values('101','suganya','cse','500000');
+insert into instructor values('102','radhika','cse','300000');
+insert into instructor values('103','vinod','mech','250000');
+insert into instructor values('104','vijay','aerospace','550000');
+insert into instructor values('105','ajith','mech','800000');
+
+
+select * from instructor;
+
+create table students(
+       SID varchar2(10),
+       name varchar2(30),
+       dept_name varchar2(30),
+       tot_cred numeric(5,0),
+       primary key(SID),
+       foreign key(dept_name)references department);
+
+insert into students values('S101','nikhil','cse','110');
+insert into students values('S102','Sangita','mech','80');
+insert into students values('S103','Raji','aerospace','120');
+insert into students values('S104','Rahul','cse','90');
+
+select * from students;
+
+
+create table teaches(
+       ID numeric(5,0),
+       course_id varchar2(10),
+       sem varchar2(20),
+       year numeric(5,0),
+       primary key(ID,course_id,sem),
+       foreign key(ID)references instructor,
+       foreign key(course_id)references course);
+
+insert into teaches values('101','Cse100','fall','2008');
+insert into teaches values('103','Mec200','spring','2009');
+insert into teaches values('102','Cse100','spring','2010');
+insert into teaches values('101','Cse303','fall','2010');
+insert into teaches values('104','Ae101','spring','2010');
+insert into teaches values('103','Mec100','spring','2010');
+
+
+select * from teaches;
+
+create table takes(
+       SID varchar2(10),
+       course_id varchar2(10),
+       sem varchar2(20),
+       year numeric(5,0),
+       primary key(SID,course_id,sem),
+       foreign key(SID)references students,
+       foreign key(course_id)references course);
+
+insert into takes values('S101','Cse100','fall','2008');
+insert into takes values('S103','Cse303','fall','2010');
+insert into takes values('S102','Cse100','spring','2010');
+insert into takes values('S104','Ae101','spring','2010');
+insert into takes values('S103','Mec100','spring','2010');
+
+
+select * from takes;
+
+create table prerequisites(
+       course_id varchar2(10),
+       prereqid varchar2(10),
+       primary key(prereqid),
+       foreign key(course_id)references course);
+
+insert into prerequisites values('Cse220','Cse100');
+insert into prerequisites values('Cse303','Cse220');
+insert into prerequisites values('Mec200','Mec100');
+
+
+select * from prerequisites;
+
+1. select title from course where credits=4;
+
+2. select name,dept_name,building from instructor natural join department; 
+
+3. select * from instructor natural join department where department.building='Academic block3' or department.building='Main block';
+
+4. select title,dept_name,prereqid from course,prerequisites where prerequisites.course_id=course.course_id;
+
+select title,dept_name,prereqid from course natural join prerequisites;
+
+select distinct title,dept_name,title as pname from course, prerequisites where course.course_id = prerequisites.course_id or course.course_id = prerequisites.prereqid;
+
+5. select name,title from instructor natural join course;
+
+6. select * from instructor where salary>(select min(salary) from instructor where dept_name='mech');
+
+7. select course_id,title from course natural join teaches where (teaches.sem='fall' and teaches.year=2008) or (teaches.sem='spring' and teaches.year=2010);
+
+8. select course_id,title from course natural join teaches where (teaches.sem='fall' and teaches.year=2008) and (teaches.sem='spring' and teaches.year=2010);
